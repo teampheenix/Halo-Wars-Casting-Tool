@@ -116,7 +116,7 @@ def extractData(asset_update, handler=lambda x: None):
             zip.extractall(targetdir)
         handler(50)
         file = os.path.join(targetdir,
-                            'SCCT-data.tar')
+                            'HWCT-data.tar')
         with tarfile.open(file, "r") as tar:
             tar.extractall(targetdir)
         handler(90)
