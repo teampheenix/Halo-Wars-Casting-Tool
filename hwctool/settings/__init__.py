@@ -43,6 +43,10 @@ def loadSettings():
 
     initConfig(configFile())
 
+    # Creating directories if not exisiting
+    if not os.path.exists(getAbsPath(dataDir)):
+        os.makedirs(getAbsPath(dataDir))
+
     loadNightbotCommands()
 
     # Creating directories if not exisiting
