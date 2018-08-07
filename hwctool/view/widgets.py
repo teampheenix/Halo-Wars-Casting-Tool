@@ -800,7 +800,7 @@ class InitialUpdater(QProgressDialog):
         QProgressDialog.__init__(self)
         self.setWindowModality(Qt.ApplicationModal)
         self.progress = 0
-        self.setWindowTitle("SCC-Tool")
+        self.setWindowTitle("Halo Wars Casting Tool")
         self.setLabelText(_("Collecting data..."))
         self.setCancelButton(None)
         self.setRange(0, 1010)

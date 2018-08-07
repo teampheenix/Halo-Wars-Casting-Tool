@@ -139,7 +139,7 @@ class VersionHandler(TasksThread):
     APP_NAME = 'StarCraft-Casting-Tool'
     APP_VERSION = hwctool.__version__
 
-    ASSET_NAME = 'SCCT-data'
+    ASSET_NAME = 'HWCT-data'
     ASSET_VERSION = '0.0.0'
 
     client = Client(ClientConfig())
