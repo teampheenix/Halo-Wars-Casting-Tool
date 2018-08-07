@@ -155,8 +155,6 @@ class MainWindow(QMainWindow):
 
             ProfileMenu(self, self.controller)
 
-            self.createLangMenu()
-
             infoMenu = menubar.addMenu(_('Info && Links'))
 
             myAct = QAction(QIcon(hwctool.settings.getResFile(
@@ -225,32 +223,6 @@ class MainWindow(QMainWindow):
 
         except Exception as e:
             module_logger.exception("message")
-
-    def createLangMenu(self):
-        menubar = self.menuBar()
-
-        langMenu = menubar.addMenu(_('Language'))
-
-        language = hwctool.settings.config.parser.get("SCT", "language")
-
-        languages = []
-        languages.append({'handle': 'de_DE', 'icon': 'de.png',
-                          'name': 'Deutsch', 'active': True})
-        languages.append({'handle': 'en_US', 'icon': 'en.png',
-                          'name': 'English', 'active': True})
-        languages.append({'handle': 'fr_FR', 'icon': 'fr.png',
-                          'name': 'Français', 'active': False})
-        languages.append({'handle': 'ru_RU', 'icon': 'ru.png',
-                          'name': 'Pусский', 'active': True})
-
-        for lang in languages:
-            myAct = QAction(QIcon(hwctool.settings.getResFile(
-                lang['icon'])), lang['name'], self, checkable=True)
-            myAct.setChecked(language == lang['handle'])
-            myAct.setDisabled(not lang['active'])
-            myAct.triggered.connect(
-                lambda x, handle=lang['handle']: self.changeLanguage(handle))
-            langMenu.addAction(myAct)
 
     def createBrowserSrcMenu(self):
         menubar = self.menuBar()
