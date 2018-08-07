@@ -55,6 +55,8 @@ class SubwindowBrowserSources(QWidget):
 
             self.setWindowTitle(_("Browser Sources"))
 
+            self.controller.websocketThread.unregister_hotkeys(force=True)
+
         except Exception as e:
             module_logger.exception("message")
 
@@ -239,7 +241,7 @@ class SubwindowBrowserSources(QWidget):
         currentIdx = 0
         idx = 0
         options = dict()
-        options['team_player'] = _("Team & Player")
+        options['team_player'] = _("Player & Leader")
         options['player'] = _("Player")
         for key, item in options.items():
             self.cb_tts_scope.addItem(item, key)
@@ -338,6 +340,7 @@ class SubwindowBrowserSources(QWidget):
         """Handle close event."""
         try:
             if(not self.__dataChanged):
+                self.controller.updateHotkeys()
                 event.accept()
                 return
             if(not self.passEvent):

@@ -156,6 +156,7 @@ class MainController:
                 self.view.label_set[i].show()
 
             self.view.updatePlayerCompleters()
+            self.updatePlayerIntros()
 
         except Exception as e:
             module_logger.exception("message")
@@ -367,9 +368,9 @@ class MainController:
         for player_idx in range(2):
             data = dict()
             data['name'] = "pressure"
-            data['race'] = "protoss"
-            data['logo'] = ""
-            data['team'] = "team pheeniX"
+            data['race'] = "Random"
+            data['logo'] = 'src/img/races/Random.png'
+            data['team'] = "Random"
             data['display'] = "block"
             self.__playerIntroData[player_idx] = data
 
@@ -392,7 +393,7 @@ class MainController:
                 "Style", "custom_font")
         return data
 
-    def updatePlayerIntros(self, newData):
+    def updatePlayerIntros(self):
         """Update player intro files."""
         module_logger.info("updatePlayerIntros")
 
@@ -403,39 +404,24 @@ class MainController:
         tts_scope = hwctool.settings.config.parser.get(
             "Intros", "tts_scope")
 
+        set_idx = name = self.matchData.getNextSet(True)
+
         for player_idx in range(2):
-            team1 = newData.playerInList(
-                player_idx,
-                self.matchData.getPlayerList(0))
-            team2 = newData.playerInList(
-                player_idx, self.matchData.getPlayerList(1))
-
-            if(not team1 and not team2):
-                team = ""
-                logo = ""
-                display = "none"
-            # elif(team1):
-            #     team = self.matchData.getTeam(0)
-            #     logo = "../" + self.logoManager.getTeam1().getFile(True)
-            #     display = "block"
-            # elif(team2):
-            #     team = self.matchData.getTeam(1)
-            #     logo = "../" + self.logoManager.getTeam2().getFile(True)
-            #     display = "block"
-
-            name = newData.getPlayer(player_idx)
+            name = self.matchData.getPlayer(player_idx, set_idx)
+            race = self.matchData.getRace(player_idx, set_idx)
             self.__playerIntroData[player_idx]['name'] = name
-            self.__playerIntroData[player_idx]['team'] = team
-            self.__playerIntroData[player_idx]['race'] = newData.getRace(
-                player_idx).lower()
-            self.__playerIntroData[player_idx]['logo'] = logo
-            self.__playerIntroData[player_idx]['display'] = display
+            self.__playerIntroData[player_idx]['team'] = race
+            self.__playerIntroData[player_idx]['race'] = race
+            file = 'src/img/races/{}.png'
+            self.__playerIntroData[player_idx]['logo'] = \
+                file.format(race.replace(' ', '_'))
+            self.__playerIntroData[player_idx]['display'] = "block"
             self.__playerIntroIdx = 0
 
             try:
                 if tts_active:
-                    if team and tts_scope == 'team_player':
-                        text = "{}'s {}".format(team, name)
+                    if tts_scope == 'team_player':
+                        text = "{} as {}".format(name, race)
                     else:
                         text = name
                     tts = gtts.gTTS(text=text, lang=tts_lang)
@@ -517,6 +503,7 @@ class MainController:
     def matchMetaDataChanged(self):
         data = self.matchData.getScoreData()
         self.websocketThread.sendData2Path("score", "ALL_DATA", data)
+        self.updatePlayerIntros()
 
     def handleMatchDataChange(self, label, object):
         if label == 'team':
@@ -540,9 +527,7 @@ class MainController:
                         'setid': object['set_idx'] + 1,
                         'color': color})
 
-            set_idx = self.matchData.getNextSet()
-            if set_idx == -1:
-                set_idx = self.matchData.getNoSets() - 1
+            set_idx = self.matchData.getNextSet(True)
 
             file = 'src/img/races/{}.png'
 
@@ -552,6 +537,8 @@ class MainController:
                 self.websocketThread.sendData2Path(
                     'score', 'CHANGE_IMAGE',
                     {'id': 'logo{}'.format(idx + 1), 'img': img})
+
+            self.updatePlayerIntros()
         elif label == 'color':
             for idx in range(2):
                 self.websocketThread.sendData2Path(
@@ -567,20 +554,22 @@ class MainController:
                     'score', 'CHANGE_TEXT',
                     {'id': 'team{}'.format(object['team_idx'] + 1),
                      'text': object['value']})
+            if object['set_idx'] == self.matchData.getNextSet(True):
+                self.updatePlayerIntros()
         elif label == 'race':
 
-            set_idx = self.matchData.getNextSet()
-            if set_idx == -1:
-                set_idx = self.matchData.getNoSets() - 1
+            set_idx = self.matchData.getNextSet(True)
 
-            file = 'src/img/races/{}.png'
+            if object['set_idx'] == set_idx:
+                self.updatePlayerIntros()
+                file = 'src/img/races/{}.png'
 
-            for idx in range(2):
-                img = file.format(self.matchData.getRace(
-                    idx, set_idx).replace(' ', '_'))
-                self.websocketThread.sendData2Path(
-                    'score', 'CHANGE_IMAGE',
-                    {'id': 'logo{}'.format(idx + 1), 'img': img})
+                for idx in range(2):
+                    img = file.format(self.matchData.getRace(
+                        idx, set_idx).replace(' ', '_'))
+                    self.websocketThread.sendData2Path(
+                        'score', 'CHANGE_IMAGE',
+                        {'id': 'logo{}'.format(idx + 1), 'img': img})
 
     def newVersion(self, version, force=False):
         """Display dialog for new version."""

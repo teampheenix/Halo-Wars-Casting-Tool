@@ -483,11 +483,14 @@ class matchData(QObject):
         except Exception:
             return False
 
-    def getNextSet(self):
+    def getNextSet(self, force=False):
         for set_idx in range(self.getNoSets()):
             if self.getMapScore(set_idx) == 0:
                 return set_idx
-        return -1
+        if force:
+            return self.getNoSets() - 1
+        else:
+            return -1
 
     def getNextMap(self, next_idx=-1):
         set_idx = self.getNextSet()
