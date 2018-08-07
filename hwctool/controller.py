@@ -13,7 +13,6 @@ import hwctool.settings
 import hwctool.tasks.nightbot
 import hwctool.tasks.twitch
 from hwctool.matchdata import matchData
-from hwctool.settings.alias import AliasManager
 from hwctool.settings.history import HistoryManager
 from hwctool.settings.placeholders import PlaceholderList
 from hwctool.tasks.auth import AuthThread
@@ -49,7 +48,6 @@ class MainController:
             self.placeholders = self.placeholderSetup()
             self._warning = False
             self.checkVersion()
-            self.aliasManager = AliasManager()
             self.historyManager = HistoryManager()
             self.initPlayerIntroData()
 
@@ -282,7 +280,6 @@ class MainController:
         self.matchData.writeJsonFile()
         hwctool.settings.saveNightbotCommands()
         self.historyManager.dumpJson()
-        self.aliasManager.dumpJson()
 
     def saveConfig(self):
         """Save the settings to the config file."""
@@ -307,70 +304,6 @@ class MainController:
                         race, Qt.MatchFixedString)
                     if index >= 0:
                         self.view.cb_race[team_idx][set_idx](index)
-
-    def requestScoreUpdate(self, newSC2MatchData):
-        """Update score based on result of SC2-Client-API."""
-        try:
-            alias = self.aliasManager.translatePlayer
-            newscore = 0
-            for j in range(2):
-                self.historyManager.insertPlayer(
-                    alias(newSC2MatchData.getPlayer(j)),
-                    newSC2MatchData.getRace(j))
-            self.view.updatePlayerCompleters()
-            if newSC2MatchData.result == 0:
-                return
-            for i in range(self.matchData.getNoSets()):
-                player1 = self.matchData.getPlayer(0, i)
-                player2 = self.matchData.getPlayer(1, i)
-                found, in_order, newscore, _ = \
-                    newSC2MatchData.compare_returnScore(
-                        player1,
-                        player2,
-                        translator=alias)
-                if found:
-                    if(self.view.setScore(i, newscore)):
-                        race1 = newSC2MatchData.getRace(0)
-                        race2 = newSC2MatchData.getRace(1)
-                        if not in_order:
-                            race1, race2 = race2, race1
-                        self.setRace(0, i, race1)
-                        self.setRace(1, i, race2)
-                        break
-                    else:
-                        continue
-            # If not found try again with weak search
-            # and set missing playernames
-            if not found:
-                for i in range(self.matchData.getNoSets()):
-                    player1 = self.matchData.getPlayer(0, i)
-                    player2 = self.matchData.getPlayer(1, i)
-                    found, in_order, newscore, notset_idx \
-                        = newSC2MatchData.compare_returnScore(
-                            player1, player2, weak=True, translator=alias)
-                    if(found and notset_idx in range(2)):
-                        if(self.view.setScore(i, newscore, allkill=False)):
-                            race1 = newSC2MatchData.getRace(0)
-                            race2 = newSC2MatchData.getRace(1)
-                            if not in_order:
-                                race1, race2 = race2, race1
-                                player = newSC2MatchData.getPlayer(
-                                    1 - notset_idx)
-                            else:
-                                player = newSC2MatchData.getRace(notset_idx)
-                            self.setRace(0, i, race1)
-                            self.setRace(1, i, race2)
-                            self.matchData.setPlayer(notset_idx, i, player)
-                            with self.view.tlock:
-                                self.view.le_player[notset_idx][i].setText(
-                                    player)
-                            self.allkillUpdate()
-                            break
-                        else:
-                            continue
-
-        except Exception as e:
-            module_logger.exception("message")
 
     def toggleWidget(self, widget, condition, ttFalse='', ttTrue=''):
         """Disable or an enable a widget based on a condition."""
@@ -473,11 +406,9 @@ class MainController:
         for player_idx in range(2):
             team1 = newData.playerInList(
                 player_idx,
-                self.matchData.getPlayerList(0),
-                self.aliasManager.translatePlayer)
+                self.matchData.getPlayerList(0))
             team2 = newData.playerInList(
-                player_idx, self.matchData.getPlayerList(1),
-                self.aliasManager.translatePlayer)
+                player_idx, self.matchData.getPlayerList(1))
 
             if(not team1 and not team2):
                 team = ""
@@ -492,8 +423,7 @@ class MainController:
             #     logo = "../" + self.logoManager.getTeam2().getFile(True)
             #     display = "block"
 
-            name = self.aliasManager.translatePlayer(
-                newData.getPlayer(player_idx))
+            name = newData.getPlayer(player_idx)
             self.__playerIntroData[player_idx]['name'] = name
             self.__playerIntroData[player_idx]['team'] = team
             self.__playerIntroData[player_idx]['race'] = newData.getRace(
@@ -597,7 +527,7 @@ class MainController:
                      'text': object['value']})
         elif label == 'score':
             score = self.matchData.getScore()
-            for idx in range(0, 2):
+            for idx in range(2):
                 self.websocketThread.sendData2Path(
                     'score', 'CHANGE_TEXT', {
                         'id': 'score{}'.format(idx + 1),
@@ -609,89 +539,48 @@ class MainController:
                         'teamid': idx + 1,
                         'setid': object['set_idx'] + 1,
                         'color': color})
-            colorData = self.matchData.getColorData(object['set_idx'])
-            self.websocketThread.sendData2Path(
-                ['mapicons_box', 'mapicons_landscape'],
-                'CHANGE_SCORE', {
-                    'winner': object['value'],
-                    'setid': object['set_idx'] + 1,
-                    'score_color': colorData['score_color'],
-                    'border_color': colorData['border_color'],
-                    'hide': colorData['hide'],
-                    'opacity': colorData['opacity']})
-            if hwctool.settings.config.parser.getboolean(
-                    "Mapstats", "mark_played",):
-                map = self.matchData.getMap(object['set_idx'])
-                played = object['value'] != 0
+
+            set_idx = self.matchData.getNextSet()
+            if set_idx == -1:
+                set_idx = self.matchData.getNoSets() - 1
+
+            file = 'src/img/races/{}.png'
+
+            for idx in range(1):
+                img = file.format(self.matchData.getRace(
+                    idx, set_idx).replace(' ', '_'))
                 self.websocketThread.sendData2Path(
-                    'mapstats', 'MARK_PLAYED', {'map': map, 'played': played})
+                    'score', 'CHANGE_IMAGE',
+                    {'id': 'logo{}'.format(idx + 1), 'img': img})
         elif label == 'color':
-            for idx in range(0, 2):
+            for idx in range(2):
                 self.websocketThread.sendData2Path(
                     'score', 'CHANGE_SCORE', {
                         'teamid': idx + 1,
                         'setid': object['set_idx'] + 1,
                         'color': object['score_color']})
-            self.websocketThread.sendData2Path(
-                ['mapicons_box', 'mapicons_landscape'],
-                'CHANGE_SCORE', {
-                    'winner': 0,
-                    'setid': object['set_idx'] + 1,
-                    'score_color': object['score_color'],
-                    'border_color': object['border_color'],
-                    'hide': object['hide'],
-                    'opacity': object['opacity']})
-        elif label == 'color-data':
-            self.websocketThread.sendData2Path(
-                ['mapicons_box', 'mapicons_landscape'], 'CHANGE_SCORE', {
-                    'winner': object['score'],
-                    'setid': object['set_idx'] + 1,
-                    'score_color': object['score_color'],
-                    'border_color': object['border_color'],
-                    'hide': object['hide'],
-                    'opacity': object['opacity']})
         elif label == 'outcome':
             self.websocketThread.sendData2Path('score', 'SET_WINNER', object)
         elif label == 'player':
-            self.websocketThread.sendData2Path(
-                ['mapicons_box', 'mapicons_landscape'],
-                'CHANGE_TEXT', {
-                    'icon': object['set_idx'] + 1,
-                    'label': 'player{}'.format(object['team_idx'] + 1),
-                    'text': object['value']})
             if object['set_idx'] == 0 and self.matchData.getSolo():
                 self.websocketThread.sendData2Path(
                     'score', 'CHANGE_TEXT',
                     {'id': 'team{}'.format(object['team_idx'] + 1),
                      'text': object['value']})
         elif label == 'race':
-            self.websocketThread.sendData2Path(
-                ['mapicons_box', 'mapicons_landscape'],
-                'CHANGE_RACE', {
-                    'icon': object['set_idx'] + 1,
-                    'team': object['team_idx'] + 1,
-                    'race': object['value'].lower()})
-        elif label == 'map':
-            self.websocketThread.sendData2Path(
-                ['mapicons_box', 'mapicons_landscape'],
-                'CHANGE_MAP', {
-                    'icon': object['set_idx'] + 1,
-                    'map': object['value'],
-                    'map_img': self.getMapImg(object['value'])})
 
-        data = self.matchData.getMapIconsData()
-        for type in ['box', 'landscape']:
-            for idx in range(0, 3):
-                path = 'mapicons_{}_{}'.format(type, idx + 1)
-                if len(self.websocketThread.connected.get(path, set())) > 0:
-                    processedData = dict()
-                    for set_idx in \
-                            self.websocketThread.compareMapIconSets(path):
-                        processedData[set_idx] = data[set_idx]
-                    if(len(processedData) > 0):
-                        self.websocketThread.sendData2Path(path,
-                                                           'DATA',
-                                                           processedData)
+            set_idx = self.matchData.getNextSet()
+            if set_idx == -1:
+                set_idx = self.matchData.getNoSets() - 1
+
+            file = 'src/img/races/{}.png'
+
+            for idx in range(2):
+                img = file.format(self.matchData.getRace(
+                    idx, set_idx).replace(' ', '_'))
+                self.websocketThread.sendData2Path(
+                    'score', 'CHANGE_IMAGE',
+                    {'id': 'logo{}'.format(idx + 1), 'img': img})
 
     def newVersion(self, version, force=False):
         """Display dialog for new version."""

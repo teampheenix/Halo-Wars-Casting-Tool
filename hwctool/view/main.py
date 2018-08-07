@@ -17,7 +17,6 @@ from hwctool.settings.client_config import ClientConfig
 from hwctool.view.subBrowserSources import SubwindowBrowserSources
 from hwctool.view.subConnections import SubwindowConnections
 from hwctool.view.subMarkdown import SubwindowMarkdown
-from hwctool.view.subMisc import SubwindowMisc
 from hwctool.view.subStyles import SubwindowStyles
 from hwctool.view.widgets import LedIndicator, MonitoredLineEdit, ProfileMenu
 
@@ -151,11 +150,6 @@ class MainWindow(QMainWindow):
             styleAct.setToolTip('')
             styleAct.triggered.connect(self.openStyleDialog)
             settingsMenu.addAction(styleAct)
-            miscAct = QAction(QIcon(hwctool.settings.getResFile(
-                'settings.png')), _('Misc'), self)
-            miscAct.setToolTip('')
-            miscAct.triggered.connect(self.openMiscDialog)
-            settingsMenu.addAction(miscAct)
 
             self.createBrowserSrcMenu()
 
@@ -195,7 +189,7 @@ class MainWindow(QMainWindow):
 
             websiteAct = QAction(
                 QIcon(
-                    hwctool.settings.getResFile('scct.ico')),
+                    hwctool.settings.getResFile('hwct.ico')),
                 'Halo Wars Casting Tool', self)
             websiteAct.triggered.connect(lambda: self.controller.openURL(
                 "https://teampheenix.github.io/StarCraft-Casting-Tool/"))
@@ -357,14 +351,8 @@ class MainWindow(QMainWindow):
         self.mysubwindows['styles'].createWindow(self)
         self.mysubwindows['styles'].show()
 
-    def openMiscDialog(self, tab=''):
-        """Open subwindow with misc settings."""
-        self.mysubwindows['misc'] = SubwindowMisc()
-        self.mysubwindows['misc'].createWindow(self, tab)
-        self.mysubwindows['misc'].show()
-
     def openBrowserSourcesDialog(self, tab=''):
-        """Open subwindow with misc settings."""
+        """Open subwindow with browser sources settings."""
         self.mysubwindows['browser'] = SubwindowBrowserSources()
         self.mysubwindows['browser'].createWindow(self, tab)
         self.mysubwindows['browser'].show()
@@ -522,8 +510,7 @@ class MainWindow(QMainWindow):
 
     def updatePlayerCompleters(self):
         """Refresh the completer for the player line edits."""
-        list = hwctool.settings.config.getMyPlayers(
-            True) + ["TBD"] + self.controller.historyManager.getPlayerList()
+        list = ["TBD"] + self.controller.historyManager.getPlayerList()
         for player_idx in range(self.max_no_sets):
             for team_idx in range(2):
                 completer = QCompleter(
@@ -813,21 +800,6 @@ class MainWindow(QMainWindow):
         finally:
             QApplication.restoreOverrideCursor()
 
-    def refresh_click(self):
-        """Handle click to refresh/load data from an URL."""
-        QApplication.setOverrideCursor(
-            Qt.WaitCursor)
-        try:
-            url = self.le_url.text()
-            with self.tlock:
-                self.statusBar().showMessage(_('Reading {}...').format(url))
-                msg = self.controller.refreshData(url)
-                self.statusBar().showMessage(msg)
-        except Exception as e:
-            module_logger.exception("message")
-        finally:
-            QApplication.restoreOverrideCursor()
-
     def openBrowser_click(self):
         """Handle request to open URL in browser."""
         try:
@@ -922,7 +894,6 @@ class MainWindow(QMainWindow):
 
             if race == "Random":
                 new_race = self.controller.historyManager.getRace(player)
-                print('New Race', new_race)
                 if new_race != "Random":
                     index = self.cb_race[team_idx][player_idx].findText(
                         new_race, Qt.MatchFixedString)
@@ -944,13 +915,16 @@ class MainWindow(QMainWindow):
         self.controller.historyManager.insertPlayer(player, race)
         self.controller.matchData.setRace(
             team_idx, player_idx,
-            hwctool.settings.idx2race(
-                self.cb_race[team_idx][player_idx].currentIndex()))
+            self.cb_race[team_idx][player_idx].currentText())
         try:
             if(player_idx == 0 and self.controller.matchData.getSolo()):
-                idx = self.cb_race[team_idx][0].currentIndex()
+                race = self.cb_race[team_idx][0].currentText()
                 for player_idx in range(1, self.max_no_sets):
-                    self.cb_race[team_idx][player_idx].setCurrentIndex(idx)
+                    index = self.cb_race[team_idx][player_idx].findText(
+                        race, Qt.MatchFixedString)
+                    if index >= 0:
+                        self.cb_race[team_idx][player_idx].setCurrentIndex(
+                            index)
 
         except Exception as e:
             module_logger.exception("message")
@@ -967,9 +941,9 @@ class MainWindow(QMainWindow):
         if highlight:
             myPalette = self.pb_applycustom.palette()
             myPalette.setColor(QPalette.Background,
-                               Qt.darkBlue)
+                               Qt.darkRed)
             myPalette.setColor(QPalette.ButtonText,
-                               Qt.darkBlue)
+                               Qt.darkRed)
             self.pb_applycustom.setPalette(myPalette)
         else:
             self.pb_applycustom.setPalette(self.defaultButtonPalette)

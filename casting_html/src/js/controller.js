@@ -9,7 +9,7 @@ class Controller {
   }
 
   generateKey() {
-    this.key = 'scct-' + this.profile + '-' + this.name;
+    this.key = 'hwct-' + this.profile + '-' + this.name;
     if (this.ident != 0) {
       this.key = this.key + '_' + ident.toString();
     }

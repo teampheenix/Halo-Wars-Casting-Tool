@@ -76,7 +76,7 @@ div.box_left {
   height: 100%;
   left: 0px;
   width: calc((100% - var(--middle-width) + 2 * var(--border-radius)) / 2);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.4)), color-stop(8%, rgba(0, 0, 0, 0.05)), color-stop(50%, rgba(0, 0, 0, 0.0)), color-stop(92%, rgba(0, 0, 0, 0.40)), color-stop(100%, rgba(0, 0, 0, 0.20))), url("../../img/textures/background-left.jpg");
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.4)), color-stop(8%, rgba(0, 0, 0, 0.05)), color-stop(50%, rgba(0, 0, 0, 0.0)), color-stop(92%, rgba(0, 0, 0, 0.40)), color-stop(100%, rgba(0, 0, 0, 0.20))), url("../../img/textures/texture2.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   box-sizing: border-box;
@@ -138,9 +138,9 @@ div.box_right {
   height: 100%;
   right: 0px;
   width: calc((100% - var(--middle-width) + 2 * var(--border-radius)) / 2);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.4)), color-stop(8%, rgba(0, 0, 0, 0.05)), color-stop(50%, rgba(0, 0, 0, 0.0)), color-stop(92%, rgba(0, 0, 0, 0.40)), color-stop(100%, rgba(0, 0, 0, 0.20))), url("../../img/textures/background-right.jpg");
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.4)), color-stop(8%, rgba(0, 0, 0, 0.05)), color-stop(50%, rgba(0, 0, 0, 0.0)), color-stop(92%, rgba(0, 0, 0, 0.40)), color-stop(100%, rgba(0, 0, 0, 0.20))), url("../../img/textures/texture2.jpg");
   background-size: cover;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-position: -600px 0px;
   box-sizing: border-box;
   overflow: hidden;
@@ -179,7 +179,7 @@ div.lower-text {
   height: var(--lower-text-height);
   width: 100%;
   line-height: 25px;
-  background: rgba(0, 0, 0, 0.6) !important;
+  background: rgba(0, 0, 0, 0.5) !important;
 }
 
 div.circle {
@@ -222,14 +222,14 @@ div.mapscore-left {
   -webkit-font-smoothing: antialiased;
 }
 
-.loser {
-  filter: brightness(75%);
-}
-
 .score {
   --winner-color: white;
   --size: 5px;
   color: white !important;
   text-shadow: 0px 0px 2px black, 0px 0px 2px black, 0px 0px 2px black, 0px 0px 2px black, 0px 0px 2px black, 0px 0px 2px black, 0px 0px 2px black, 0px 0px 2px black, 0px 0px var(--size) var(--winner-color), 0px 0px var(--size) var(--winner-color), 0px 0px var(--size) var(--winner-color), 0px 0px var(--size) var(--winner-color) !important;
   -webkit-font-smoothing: antialiased;
+}
+
+.loser {
+  filter: brightness(75%);
 }

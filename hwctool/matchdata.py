@@ -876,6 +876,12 @@ class matchData(QObject):
         data['winner'] = winner
         data['score1'] = score[0]
         data['score2'] = score[1]
+        idx = self.getNextSet()
+        if idx == -1:
+            idx = self.getNoSets() - 1
+        file = 'src/img/races/{}.png'
+        data['logo1'] = file.format(self.getRace(0, idx).replace(' ', '_'))
+        data['logo2'] = file.format(self.getRace(1, idx).replace(' ', '_'))
 
         return data
 

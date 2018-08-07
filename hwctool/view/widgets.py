@@ -1247,7 +1247,7 @@ class ProfileMenu(QMenu):
         current = hwctool.settings.profileManager.current()
         filename = os.path.join(
             hwctool.settings.profileManager.basedir(),
-            'scct-profile-{}-{}.zip'.format(current['name'],
+            'hwct-profile-{}-{}.zip'.format(current['name'],
                                             time.strftime("%Y%m%d"))
         )
         filename, ok = QFileDialog.getSaveFileName(

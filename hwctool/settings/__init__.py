@@ -69,8 +69,6 @@ def loadSettings():
     #     os.remove(link)
     #     os.symlink(link, profiles)
 
-    loadMapList()
-
 
 def getResFile(file):
     if hasattr(sys, '_MEIPASS'):
@@ -120,25 +118,6 @@ def getAbsPath(file):
     """Link to absolute path of a file."""
 
     return this.profileManager.getFile(file)
-
-
-def loadMapList():
-    """Load map list form dir."""
-    data = []
-    try:
-        dir = os.path.normpath(os.path.join(
-            getAbsPath(casting_html_dir), "src/img/maps"))
-
-        for fname in os.listdir(dir):
-            full_fname = os.path.join(dir, fname)
-            name, ext = os.path.splitext(fname)
-            if os.path.isfile(full_fname) and ext in ['.jpg', '.png']:
-                mapName = name.replace('_', " ")
-                if mapName not in data:
-                    data.append(mapName)
-    finally:
-        this.maps = data
-        return data
 
 
 def loadNightbotCommands():

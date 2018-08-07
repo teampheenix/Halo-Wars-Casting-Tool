@@ -35,7 +35,7 @@ def main():
 
             icon = QIcon()
             icon.addFile(hwctool.settings.getResFile(
-                'scct.ico'), QSize(32, 32))
+                'hwct.ico'), QSize(32, 32))
             app.setWindowIcon(icon)
 
             showChangelog, updater = initial_download()
@@ -61,8 +61,8 @@ def main_window(app, showChangelog=False):
     try:
         """Run the main program."""
         icon = QIcon()
-        icon.addFile(hwctool.settings.getResFile('scct.ico'), QSize(32, 32))
-        icon.addFile(hwctool.settings.getResFile('scct.png'), QSize(256, 256))
+        icon.addFile(hwctool.settings.getResFile('hwct.ico'), QSize(32, 32))
+        icon.addFile(hwctool.settings.getResFile('hwct.png'), QSize(256, 256))
         app.setWindowIcon(icon)
         cntlr = MainController()
         MainWindow(cntlr, app, showChangelog)

@@ -100,8 +100,8 @@ function insertData() {
   $('#team2').text(data['team2']);
   $('#score1').text(data['score1']);
   $('#score2').text(data['score2']);
-  $('#logo1').css("background-image", "url('../" + data['logo1'] + "')");
-  $('#logo2').css("background-image", "url('../" + data['logo2'] + "')");
+  $('#logo1').css("background-image", "url('" + data['logo1'] + "')");
+  $('#logo2').css("background-image", "url('" + data['logo2'] + "')");
   if (data['winner'][0]) {
     $('#team1').removeClass('loser');
     $('#team1').addClass('winner');
@@ -288,7 +288,7 @@ function changeImage(id, new_value) {
     }, "+=0.25");
 
   function _changeImage(object, new_value) {
-    object.css("background-image", "url('../" + new_value + "')");
+    object.css("background-image", "url('" + new_value + "')");
   }
 }
 
