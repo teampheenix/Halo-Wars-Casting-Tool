@@ -2,8 +2,6 @@
 
 **StarCraft Casting Tool**  is a free to use open source program that makes casting Halo Wars 2 simple. Halo Wars Casting Tool a lightweight fork of [StarCraft Casting Tool](https://teampheenix.github.io/StarCraft-Casting-Tool/)
 
-![scct-v2](https://user-images.githubusercontent.com/26044736/43646667-c915c8e2-9735-11e8-883c-4e9d6b94061b.jpg)
-
 ## Download
 
 * **[Latest executable](https://github.com/teampheenix/Halo-Wars-Casting-Tool/releases/latest)** for Windows
