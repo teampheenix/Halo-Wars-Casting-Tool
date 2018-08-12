@@ -11,6 +11,7 @@ import appdirs
 from hwctool.settings.client_config import ClientConfig
 from hwctool.settings.config import init as initConfig
 from hwctool.settings.profileManager import ProfileManager
+from hwctool.settings.safeGuard import SafeGuard
 
 module_logger = logging.getLogger('hwctool.settings')
 
@@ -35,6 +36,7 @@ races = ("Random", "Anders", "Arbiter", "Atriox", "Colony", "Cutter",
 this.profileManager = ProfileManager()
 this.maps = []
 this.nightbot_commands = dict()
+this.safe = SafeGuard()
 
 
 def loadSettings():
