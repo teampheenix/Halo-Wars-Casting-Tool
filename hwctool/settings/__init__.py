@@ -26,6 +26,8 @@ casting_data_dir = "casting_data"
 casting_html_dir = "casting_html"
 
 dataDir = "data"
+logosDir = os.path.join(dataDir, "logos")
+ttsDir = os.path.join(dataDir, "tts")
 
 windows = (platform.system().lower() == "windows")
 max_no_sets = 15
@@ -54,6 +56,9 @@ def loadSettings():
     # Creating directories if not exisiting
     if not os.path.exists(getAbsPath(casting_data_dir)):
         os.makedirs(getAbsPath(casting_data_dir))
+
+    if not os.path.exists(getAbsPath(ttsDir)):
+        os.makedirs(getAbsPath(ttsDir))
 
     # Create a symnolic link to the profiles directory
     # Not working on Windows 10 - admin rights needed

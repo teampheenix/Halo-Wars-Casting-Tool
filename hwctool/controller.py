@@ -5,7 +5,6 @@ import shutil
 import sys
 import webbrowser
 
-import gtts
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QCheckBox, QMessageBox
 
@@ -18,6 +17,7 @@ from hwctool.settings.placeholders import PlaceholderList
 from hwctool.tasks.auth import AuthThread
 from hwctool.tasks.autorequests import AutoRequestsThread
 from hwctool.tasks.textfiles import TextFilesThread
+from hwctool.tasks.texttospeech import TextToSpeech
 from hwctool.tasks.updater import VersionHandler
 from hwctool.tasks.websocket import WebsocketThread
 from hwctool.view.widgets import ToolUpdater
@@ -49,6 +49,7 @@ class MainController:
             self._warning = False
             self.checkVersion()
             self.historyManager = HistoryManager()
+            self.tts = TextToSpeech()
             self.initPlayerIntroData()
 
         except Exception as e:
@@ -281,6 +282,7 @@ class MainController:
         self.matchData.writeJsonFile()
         hwctool.settings.saveNightbotCommands()
         self.historyManager.dumpJson()
+        self.tts.dumpJson()
 
     def saveConfig(self):
         """Save the settings to the config file."""
@@ -395,14 +397,20 @@ class MainController:
 
     def updatePlayerIntros(self):
         """Update player intro files."""
+        if len(self.websocketThread.connected.get('intro', [])) < 1:
+            return
         module_logger.info("updatePlayerIntros")
 
         tts_active = hwctool.settings.config.parser.getboolean(
             "Intros", "tts_active")
-        tts_lang = hwctool.settings.config.parser.get(
-            "Intros", "tts_lang")
+        tts_voice = hwctool.settings.config.parser.get(
+            "Intros", "tts_voice")
         tts_scope = hwctool.settings.config.parser.get(
             "Intros", "tts_scope")
+        tts_pitch = hwctool.settings.config.parser.getfloat(
+            "Intros", "tts_pitch")
+        tts_rate = hwctool.settings.config.parser.getfloat(
+            "Intros", "tts_rate")
 
         set_idx = name = self.matchData.getNextSet(True)
 
@@ -420,17 +428,10 @@ class MainController:
 
             try:
                 if tts_active:
-                    if tts_scope == 'team_player':
-                        text = "{} as {}".format(name, race)
-                    else:
-                        text = name
-                    tts = gtts.gTTS(text=text, lang=tts_lang)
-                    tts_file = 'src/sound/player{}.mp3'.format(player_idx + 1)
-                    file = os.path.normpath(os.path.join(
-                        hwctool.settings.getAbsPath(
-                            hwctool.settings.casting_html_dir),
-                        tts_file))
-                    tts.save(file)
+                    text = self.tts.getLine(tts_scope, name, race, player_idx)
+                    tts_file = os.path.join("..", self.tts.synthesize(
+                        text, tts_voice,
+                        tts_pitch, tts_rate)).replace('\\', '/')
                 else:
                     tts_file = None
                 self.__playerIntroData[player_idx]['tts'] = tts_file
@@ -499,6 +500,9 @@ class MainController:
         name = path.replace('_', ' ').title()
         view.leds[path].setToolTip(
             _("{} {} Browser Source(s) connected.").format(num, name))
+
+        if path == 'intro' and num == 1:
+            self.updatePlayerIntros()
 
     def matchMetaDataChanged(self):
         data = self.matchData.getScoreData()
