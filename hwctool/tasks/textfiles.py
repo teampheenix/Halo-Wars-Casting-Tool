@@ -73,7 +73,7 @@ class TextFilesThread(TasksThread):
         file = hwctool.settings.getAbsPath(
             hwctool.settings.casting_data_dir + "/score.txt")
         try:
-            score = self.getScore()
+            score = self._matchData.getScore()
             score_str = str(score[0]) + " - " + str(score[1])
         except Exception:
             score_str = "0 - 0"

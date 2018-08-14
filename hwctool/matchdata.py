@@ -54,6 +54,8 @@ class matchData(QObject):
         except Exception as e:
             # module_logger.exception("message")
             self.setCustom(5)
+        finally:
+            self.__emitSignal('meta')
 
     def writeJsonFile(self):
         """Write json data to file."""
