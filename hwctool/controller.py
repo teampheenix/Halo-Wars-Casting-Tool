@@ -374,6 +374,7 @@ class MainController:
             data['logo'] = 'src/img/races/Random.png'
             data['team'] = "Random"
             data['display'] = "block"
+            data['color'] = 'red' if player_idx == 0 else 'blue'
             self.__playerIntroData[player_idx] = data
 
     def getPlayerIntroData(self, idx):
@@ -424,6 +425,8 @@ class MainController:
             self.__playerIntroData[player_idx]['logo'] = \
                 file.format(race.replace(' ', '_'))
             self.__playerIntroData[player_idx]['display'] = "block"
+            self.__playerIntroData[player_idx]['color'] = \
+                'red' if player_idx == 0 else 'blue'
             self.__playerIntroIdx = 0
 
             try:

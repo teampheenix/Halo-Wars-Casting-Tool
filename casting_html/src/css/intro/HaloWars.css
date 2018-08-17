@@ -29,9 +29,16 @@ div.box {
   text-align: center;
   left: calc((100% - var(--width)) / 2);
   top: calc((100% - var(--height)) / 2);
-  background-image: url("../../img/textures/HaloWars.png");
   background-size: cover;
   background-position: center;
+}
+
+div.box.red {
+  background-image: url("../../img/textures/halowars.png");
+}
+
+div.box.blue {
+  background-image: url("../../img/textures/halowars_blue.png");
 }
 
 div.race {

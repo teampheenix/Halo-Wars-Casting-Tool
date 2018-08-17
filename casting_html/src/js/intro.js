@@ -56,6 +56,13 @@ function Connect() {
         socket.send(jsonObject.state);
         tween.clear();
         $(".race").prop('id', jsonObject.data.race);
+        if(jsonObject.data.color == 'red'){
+          $(".box").addClass('red');
+          $(".box").removeClass('blue');
+        }else{
+          $(".box").addClass('blue');
+          $(".box").removeClass('red');
+        }
         $(".logo").css("display", jsonObject.data.display)
         $(".logo").css("background-image", "url(" + jsonObject.data.logo + ")");
         $('.name span').html(jsonObject.data.name);
