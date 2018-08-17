@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v0.1.3 (2018-08-17)
+
+### New
+
+* Intro Skin 'Halo Wars' is now blue for player 2.
+
+### Fix
+
+* Fixed a bug where "0-0" would always be written into score.txt.
+
+
 ## v0.1.2 (2018-08-12)
 
 ### Fix
@@ -34,3 +45,5 @@
 ### New
 
 * Initial Build.
+
+
