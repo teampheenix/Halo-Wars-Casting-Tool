@@ -1,6 +1,13 @@
 # Changelog
 
 
+## v0.1.4 (2018-08-21)
+
+### Fix
+
+* Text-to-Speech should be working again.
+
+
 ## v0.1.3 (2018-08-17)
 
 ### New
