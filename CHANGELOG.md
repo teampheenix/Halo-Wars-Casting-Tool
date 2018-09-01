@@ -1,6 +1,13 @@
 # Changelog
 
 
+## v0.1.5 (2018-09-01)
+
+### Fix
+
+* Fixed a bug that impaired tts.
+
+
 ## v0.1.4 (2018-08-21)
 
 ### Fix
