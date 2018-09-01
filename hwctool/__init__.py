@@ -12,7 +12,7 @@ import hwctool.settings.config
 
 logger = logging.getLogger('hwctool')
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 __latest_version__ = __version__
 __new_version__ = False
 
