@@ -3,6 +3,10 @@
 
 ## v0.1.6 (2019-01-13)
 
+### New
+
+* Now based on Python 3.7.2 and 64-bit.
+
 ### Changes
 
 * Changed the FireFight score skin to be red and blue.
