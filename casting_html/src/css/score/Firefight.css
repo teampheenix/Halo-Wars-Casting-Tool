@@ -7,6 +7,7 @@
   --logo: 105px;
   --font: Roboto;
   --bcolor: #2d6199;
+  --bcolor2: #992f2d;
 }
 
 body {
@@ -18,9 +19,9 @@ body {
   position: relative;
   width: var(--width);
   height: var(--height);
-  border-left: 1px solid var(--bcolor);
+  border-left: 1px solid var(--bcolor2);
   border-right: 1px solid var(--bcolor);
-  border-top: 1px solid var(--bcolor);
+  border-top: 1px solid #000000;
   /*border: 1px solid var(--bcolor);*/
   border-radius: 8px;
   display: inline-block;
@@ -35,11 +36,11 @@ body {
   left: calc(var(--side) - 1px);
   width: var(--middle);
   height: 66px;
-  border-left: 1px solid var(--bcolor);
+  border-left: 1px solid var(--bcolor2);
   border-right: 1px solid var(--bcolor);
-  border-bottom: 1px solid var(--bcolor);
+  border-bottom: 1px solid #000000;
   box-sizing: border-box;
-  background: url(../../img/textures/bg_blur.jpg);
+  background: url(../../img/textures/bg_blur_black.jpg);
   background-position: center 70%;
   
 }
@@ -117,8 +118,8 @@ div.upper-text-left {
   box-sizing: border-box;
   right: 0px;
   text-align: center;
-  filter: drop-shadow(0px 0px 1px var(--bcolor));
-  border-left: 1px solid var(--bcolor);
+  filter: drop-shadow(0px 0px 1px var(--bcolor2));
+  border-left: 1px solid var(--bcolor2);
 }
 
 div.mapscore-right {
@@ -141,7 +142,20 @@ div.mapscore-left {
   justify-content: center;
 }
 
-div.circle {
+div.box_left div.circle {
+  background: #f00;
+  width: 28px;
+  height: 20px;
+  border-radius: 4px 4px 4px 4px;
+  border: 1px solid var(--bcolor2);
+  box-sizing: border-box;
+  margin: 2px;
+  opacity: 0.85 !important;
+  box-shadow: 0px 0px 2px #992f2d;
+  flex-shrink: 1;
+}
+
+div.box_right div.circle {
   background: #f00;
   width: 28px;
   height: 20px;
@@ -154,7 +168,7 @@ div.circle {
   flex-shrink: 1;
 }
 
-div.lower-text{
+div.box_right div.lower-text{
   position: absolute;
   width: 100%;
   height: 35px;
@@ -163,14 +177,19 @@ div.lower-text{
   box-sizing: border-box;
   background: url(../../img/textures/bg_blur.jpg);
   background-position: center 75%;
-}
-
-div.lower-text-left{
   border-right: 1px solid var(--bcolor);
 }
 
-div.lower-text-right{
-  border-left: 1px solid var(--bcolor);
+div.box_left div.lower-text{
+  position: absolute;
+  width: 100%;
+  height: 35px;
+  bottom: 0%;
+  border: 1px solid var(--bcolor2);
+  box-sizing: border-box;
+  background: url(../../img/textures/bg_blur_red.jpg);
+  background-position: center 75%;
+  border-right: 1px solid var(--bcolor2);
 }
 
 div.logo {
@@ -186,7 +205,7 @@ div.box_veryleft {
   height: 100%;
   left: 0px;
   width: var(--logo);
-  background-color: #24456c;
+  background-color: #7d2734;
 }
 
 div.box_veryright {
