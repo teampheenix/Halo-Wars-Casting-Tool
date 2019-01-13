@@ -1,6 +1,13 @@
 # Changelog
 
 
+## v0.1.6 (2019-01-13)
+
+### Changes
+
+* Changed the FireFight score skin to be red and blue.
+
+
 ## v0.1.5 (2018-09-01)
 
 ### Fix
