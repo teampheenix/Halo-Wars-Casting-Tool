@@ -207,6 +207,12 @@ class MainWindow(QMainWindow):
                 lambda: self.controller.openURL("http://team-pheenix.de"))
             infoMenu.addAction(ixAct)
 
+            yodeslaAct = QAction(QIcon(hwctool.settings.getResFile(
+                'twitch.png')), 'Yodesla', self)
+            yodeslaAct.triggered.connect(
+                lambda: self.controller.openURL("https://www.twitch.tv/yodesla"))
+            infoMenu.addAction(yodeslaAct)
+
             infoMenu.addSeparator()
 
             myAct = QAction(QIcon(hwctool.settings.getResFile(
