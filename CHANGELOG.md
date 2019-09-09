@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v0.1.7 (2019-09-09)
+
+### New
+
+* Added modified Firefight style  as 'Yodesla' for the score browser source.
+
+### Changes
+
+* Updated Python and PyQt.
+
+
 ## v0.1.6 (2019-01-13)
 
 ### New
