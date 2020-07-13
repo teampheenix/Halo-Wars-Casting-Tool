@@ -102,9 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-build_app.py
-build_data.py
-sign.py
 .pyupdater/*
 pyu-data/*
 src/safe.json

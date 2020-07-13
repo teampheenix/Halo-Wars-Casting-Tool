@@ -187,7 +187,7 @@ unreleased_version_label = "(unreleased)"
 ##
 #output_engine = rest_py
 #output_engine = mustache("restructuredtext")
-output_engine = mustache("markdown")
+output_engine = mustache("changelog.tpl")
 #output_engine = makotemplate("restructuredtext")
 
 
@@ -204,7 +204,7 @@ include_merge = False
 ## The default is to be clever about it: it checks ``git config`` for
 ## ``i18n.logOutputEncoding``, and if not found will default to git's own
 ## default: ``utf-8``.
-#log_encoding = 'utf-8'
+log_encoding = 'utf-8'
 
 
 ## ``publish`` is a callable

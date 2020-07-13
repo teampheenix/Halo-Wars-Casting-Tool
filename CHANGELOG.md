@@ -1,7 +1,7 @@
 # Changelog
 
 
-## v0.1.7 (2019-09-09)
+## v0.1.7 (2020-07-13)
 
 ### New
 
@@ -18,62 +18,32 @@
 
 * Now based on Python 3.7.2 and 64-bit.
 
+* Intro Skin 'Halo Wars' is now blue for player 2.
+
 ### Changes
 
 * Changed the FireFight score skin to be red and blue.
-
-
-## v0.1.5 (2018-09-01)
 
 ### Fix
 
 * Fixed a bug that impaired tts.
 
-
-## v0.1.4 (2018-08-21)
-
-### Fix
-
 * Text-to-Speech should be working again.
-
-
-## v0.1.3 (2018-08-17)
-
-### New
-
-* Intro Skin 'Halo Wars' is now blue for player 2.
-
-### Fix
 
 * Fixed a bug where "0-0" would always be written into score.txt.
 
 
-## v0.1.2 (2018-08-12)
-
-### Fix
-
-* Fixed bug in TTS line.
-
-
 ## v0.1.1 (2018-08-12)
-
-### Fix
-
-* Fixed a bug that prevented the updater from working.
-
-
-## v0.1.0 (2018-08-12)
 
 ### New
 
 * Implemented Google Text-to-Speech API for the Intros.
 
-
-## v0.0.3 (2018-08-09)
-
-### New
-
 * Added 'Friefight' score skin and 'HaloWars' intro skin.
+
+### Fix
+
+* Fixed a bug that prevented the updater from working.
 
 
 ## v0.0.2 (2018-08-07)
