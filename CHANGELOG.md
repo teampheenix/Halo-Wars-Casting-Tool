@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v0.1.8 (2020-07-13)
+
+### New
+
+* You can add commanders/races by placing images in the <casting_html\src\img\races> folder.
+
+### Fix
+
+* Fixed issue with high DPI displays.
+
+
 ## v0.1.7 (2020-07-13)
 
 ### New
@@ -10,6 +21,10 @@
 ### Changes
 
 * Updated Python and PyQt.
+
+### Fix
+
+* Twitch Title Updater patched to reflect recent OAuth requirement.
 
 
 ## v0.1.6 (2019-01-13)
