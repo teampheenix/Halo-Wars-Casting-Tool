@@ -261,6 +261,7 @@ class SubwindowBrowserSources(QWidget):
             _("Rate:") + " "), self.sb_tts_rate)
 
         self.cb_tts_scope = QComboBox()
+        self.cb_tts_scope.setMaximumWidth(400)
         scope = hwctool.settings.config.parser.get("Intros", "tts_scope")
         currentIdx = 0
         idx = 0
