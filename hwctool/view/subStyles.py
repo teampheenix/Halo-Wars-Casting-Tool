@@ -50,12 +50,12 @@ class SubwindowStyles(QWidget):
             mainLayout.addLayout(self.buttonGroup)
             self.setLayout(mainLayout)
 
-            self.resize(QSize(mainWindow.size().width() * .80,
+            self.resize(QSize(int(mainWindow.size().width() * .80),
                               self.sizeHint().height()))
-            relativeChange = + QPoint(mainWindow.size().width() / 2,
-                                      mainWindow.size().height() / 3)\
-                - QPoint(self.size().width() / 2,
-                         self.size().height() / 3)
+            relativeChange = + QPoint(mainWindow.size().width() // 2,
+                                      mainWindow.size().height() // 3)\
+                - QPoint(self.size().width() // 2,
+                         self.size().height() // 3)
             self.move(mainWindow.pos() + relativeChange)
 
             self.setWindowTitle(_("Style Settings"))

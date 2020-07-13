@@ -484,7 +484,7 @@ class MainWindow(QMainWindow):
             if bestof == 2:
                 self.cb_minSets.setCurrentIndex(1)
             else:
-                self.cb_minSets.setCurrentIndex((bestof - 1) / 2)
+                self.cb_minSets.setCurrentIndex((bestof - 1) // 2)
 
     def updatePlayerCompleters(self):
         """Refresh the completer for the player line edits."""

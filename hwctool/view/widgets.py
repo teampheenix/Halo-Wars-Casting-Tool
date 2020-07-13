@@ -170,11 +170,11 @@ class MapDownloader(QProgressDialog):
         self.setValue(self.minimum())
 
         self.resize(QSize(
-            mainWindow.size().width() * 0.8, self.sizeHint().height()))
-        relativeChange = QPoint(mainWindow.size().width() / 2,
-                                mainWindow.size().height() / 3)\
-            - QPoint(self.size().width() / 2,
-                     self.size().height() / 3)
+            int(mainWindow.size().width() * 0.8), self.sizeHint().height()))
+        relativeChange = QPoint(mainWindow.size().width() // 2,
+                                mainWindow.size().height() // 3)\
+            - QPoint(self.size().width() // 2,
+                     self.size().height() // 3)
         self.move(mainWindow.pos() + relativeChange)
 
     def download(self):
@@ -282,11 +282,11 @@ class HotkeyRecorder(QProgressDialog):
         self.setValue(self.minimum())
 
         self.resize(QSize(
-            mainWindow.size().width() * 0.8, self.sizeHint().height()))
-        relativeChange = QPoint(mainWindow.size().width() / 2,
-                                mainWindow.size().height() / 3)\
-            - QPoint(self.size().width() / 2,
-                     self.size().height() / 3)
+            int(mainWindow.size().width() * 0.8), self.sizeHint().height()))
+        relativeChange = QPoint(mainWindow.size().width() // 2,
+                                mainWindow.size().height() // 3)\
+            - QPoint(self.size().width() // 2,
+                     self.size().height() // 3)
         self.move(mainWindow.pos() + relativeChange)
 
     def run(self):
@@ -339,11 +339,11 @@ class LogoDownloader(QProgressDialog):
         self.setValue(self.minimum())
 
         self.resize(QSize(
-            mainWindow.size().width() * 0.8, self.sizeHint().height()))
-        relativeChange = QPoint(mainWindow.size().width() / 2,
-                                mainWindow.size().height() / 3)\
-            - QPoint(self.size().width() / 2,
-                     self.size().height() / 3)
+            int(mainWindow.size().width() * 0.8), self.sizeHint().height()))
+        relativeChange = QPoint(mainWindow.size().width() // 2,
+                                mainWindow.size().height() // 3)\
+            - QPoint(self.size().width() // 2,
+                     self.size().height() // 3)
         self.move(mainWindow.pos() + relativeChange)
 
     def download(self):
@@ -393,11 +393,11 @@ class ToolUpdater(QProgressDialog):
         self.setValue(self.minimum())
 
         self.resize(QSize(
-            mainWindow.size().width() * 0.8, self.sizeHint().height()))
-        relativeChange = QPoint(mainWindow.size().width() / 2,
-                                mainWindow.size().height() / 3)\
-            - QPoint(self.size().width() / 2,
-                     self.size().height() / 3)
+            int(mainWindow.size().width() * 0.8), self.sizeHint().height()))
+        relativeChange = QPoint(mainWindow.size().width() // 2,
+                                mainWindow.size().height() // 3)\
+            - QPoint(self.size().width() // 2,
+                     self.size().height() // 3)
         self.move(mainWindow.pos() + relativeChange)
         self.show()
 
@@ -812,9 +812,9 @@ class InitialUpdater(QProgressDialog):
         m_width = self.size().width()
         m_height = self.size().height()
         self.resize(QSize(self.sizeHint().width(), self.sizeHint().height()))
-        relativeChange = QPoint(m_width / 2, m_height / 2)\
-            - QPoint(self.size().width() / 2,
-                     self.size().height() / 2)
+        relativeChange = QPoint(m_width // 2, m_height // 2)\
+            - QPoint(self.size().width() // 2,
+                     self.size().height() // 2)
         self.move(self.pos() + relativeChange)
 
         self.show()
@@ -1047,7 +1047,7 @@ class LedIndicator(QAbstractButton):
         pen.setWidth(1)
 
         painter.setRenderHint(QPainter.Antialiasing)
-        painter.translate(self.width() / 2, self.height() / 2)
+        painter.translate(self.width() // 2, self.height() // 2)
         painter.scale(realSize / self.scaledSize, realSize / self.scaledSize)
 
         gradient = QRadialGradient(
