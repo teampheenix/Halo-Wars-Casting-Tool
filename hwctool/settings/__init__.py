@@ -31,9 +31,9 @@ ttsDir = os.path.join(dataDir, "tts")
 
 windows = (platform.system().lower() == "windows")
 max_no_sets = 15
-races = ("Random", "Anders", "Arbiter", "Atriox", "Colony", "Cutter",
+races = ["Random", "Anders", "Arbiter", "Atriox", "Colony", "Cutter",
          "Decimus", "Forge", "Isabel", "Jerome", "Johnson", "Kinsano",
-         "Serina", "Shipmaster", "Pavium", "Voridus", "Yap Yap")
+         "Serina", "Shipmaster", "Pavium", "Voridus", "Yap Yap"]
 
 this.profileManager = ProfileManager()
 this.maps = []
@@ -59,6 +59,8 @@ def loadSettings():
 
     if not os.path.exists(getAbsPath(ttsDir)):
         os.makedirs(getAbsPath(ttsDir))
+
+    loadRaceList()
 
     # Create a symnolic link to the profiles directory
     # Not working on Windows 10 - admin rights needed
@@ -164,3 +166,20 @@ def idx2race(idx):
         return races[idx]
     except Exception:
         return races[0]
+
+
+def loadRaceList():
+    """Load races from dir."""
+    try:
+        racedir = os.path.normpath(os.path.join(
+            getAbsPath(casting_html_dir), "src/img/races"))
+
+        for fname in os.listdir(racedir):
+            full_fname = os.path.join(racedir, fname)
+            name, ext = os.path.splitext(fname)
+            if os.path.isfile(full_fname) and ext in ['.jpg', '.jpeg', '.png']:
+                mapName = name.replace('_', " ")
+                if mapName not in this.races:
+                    this.races.append(mapName)
+    except FileNotFoundError:
+        pass
