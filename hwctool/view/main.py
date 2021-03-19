@@ -213,20 +213,6 @@ class MainWindow(QMainWindow):
                 lambda: self.controller.openURL("https://www.twitch.tv/yodesla"))
             infoMenu.addAction(yodeslaAct)
 
-            infoMenu.addSeparator()
-
-            myAct = QAction(QIcon(hwctool.settings.getResFile(
-                'patreon.png')), _('Become a Patron'), self)
-            myAct.triggered.connect(lambda: self.controller.openURL(
-                "https://www.patreon.com/StarCraftCastingTool"))
-            infoMenu.addAction(myAct)
-
-            myAct = QAction(QIcon(hwctool.settings.getResFile(
-                'donate.ico')), _('Donate via PayPal'), self)
-            myAct.triggered.connect(lambda: self.controller.openURL(
-                "https://paypal.me/StarCraftCastingTool"))
-            infoMenu.addAction(myAct)
-
         except Exception as e:
             module_logger.exception("message")
 

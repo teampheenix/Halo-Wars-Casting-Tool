@@ -176,14 +176,6 @@ msgstr "Changelog"
 msgid "Open log folder"
 msgstr "Open log folder"
 
-#: view/main.py:215
-msgid "Become a Patron"
-msgstr "Become a Patron"
-
-#: view/main.py:221
-msgid "Donate via PayPal"
-msgstr "Donate via PayPal"
-
 #: view/main.py:232
 msgid "Language"
 msgstr "Language"
