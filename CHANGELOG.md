@@ -1,6 +1,13 @@
 # Changelog
 
 
+## v0.2.0 (2021-07-21)
+
+### Fix
+
+* Fixed a bug where the browser source would not work due incorrect profile.js file.
+
+
 ## v0.1.8 (2020-07-13)
 
 ### New
